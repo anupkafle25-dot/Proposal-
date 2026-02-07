@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Pacifico&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#ffd6e8,#ffeaf4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* floating hearts */
+.heart{
+  position:absolute;
+  font-size:18px;
+  opacity:.35;
+  animation:float 8s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(110vh) scale(.6);}
+  to{transform:translateY(-10vh) scale(1);}
+}
+
+/* glass card */
+.card{
+  width:90%;
+  max-width:360px;
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(18px);
+  border-radius:28px;
+  padding:32px 22px 40px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.12);
+  animation:fade .5s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.title{
+  font-family:'Pacifico',cursive;
+  font-size:26px;
+  color:#ff2f6d;
+  margin-bottom:12px;
+}
+
+.text{
+  font-size:16px;
+  color:#ff4f87;
+  margin-bottom:30px;
+}
+
+button{
+  border:none;
+  padding:14px 28px;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.primary{
+  background:linear-gradient(135deg,#ff4f87,#ff84b2);
+  color:#fff;
+  box-shadow:0 10px 20px rgba(255,79,135,.4);
+}
+
+.secondary{
+  background:rgba(255,255,255,.7);
+  color:#ff4f87;
+  border:2px solid #ff9fc3;
+  position:relative;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+/* confetti */
+.confetti{
+  position:absolute;
+  width:8px;
+  height:14px;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  from{transform:translateY(-10vh) rotate(0deg);}
+  to{transform:translateY(110vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<script>
+/* floating hearts */
+for(let i=0;i<20;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💗";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=5+Math.random()*6+"s";
+  h.style.fontSize=14+Math.random()*18+"px";
+  document.body.appendChild(h);
+}
+</script>
+
+<div class="card" id="card"></div>
+
+<script>
+const card=document.getElementById("card");
+let step=1;
+
+const content=[
+  `
+  <div class="title">Hey Alisha 💗</div>
+  <div class="text">I have something important to ask you…</div>
+  <button class="primary" onclick="next()">Tell me 👀</button>
+  `,
+  `
+  <div class="title">Just a moment ✨</div>
+  <div class="text">Every moment with you feels special and beautiful 💖</div>
+  <button class="primary" onclick="next()">Go on 💕</button>
+  `,
+  `
+  <div class="title">Happy Propose Day ❤️</div>
+  <div class="text">Will you marry me? 💍</div>
+  <div class="buttons">
+    <button class="primary" onclick="yes()">Yes! 💖</button>
+    <button class="secondary" id="no">No</button>
+  </div>
+  `,
+  `
+  <div class="title">Yay! You said YES! 🎉</div>
+  <div class="text">
+    I love you forever and ever and ever 💖
+    <br><br>
+    <b>Forever yours,<br>Anup 💞</b>
+  </div>
+  `
+];
+
+function render(){
+  card.innerHTML=content[step-1];
+  card.style.animation="fade .5s ease";
+  if(step===3){
+    const no=document.getElementById("no");
+    no.addEventListener("mouseover",moveNo);
+    no.addEventListener("touchstart",moveNo);
+  }
+}
+
+function next(){
+  step++;
+  render();
+}
+
+function moveNo(){
+  const x=Math.random()*(card.offsetWidth-100);
+  const y=Math.random()*(card.offsetHeight-100);
+  this.style.position="absolute";
+  this.style.left=x+"px";
+  this.style.top=y+"px";
+}
+
+function yes(){
+  step=4;
+  render();
+  confetti();
+}
+
+function confetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=["#ff4f87","#ff84b2","#ffc1d9"][Math.floor(Math.random()*3)];
+    c.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
